@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Turuncu Sohbet</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: orange;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    #chat {
+      background-color: #ffa500;
+      width: 80%;
+      max-width: 600px;
+      height: 70%;
+      border-radius: 10px;
+      padding: 10px;
+      overflow-y: auto;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    #messages {
+      list-style: none;
+      padding: 0;
+    }
+
+    #messages li {
+      margin-bottom: 5px;
+    }
+
+    #input-area {
+      margin-top: 10px;
+      display: flex;
+      width: 80%;
+      max-width: 600px;
+    }
+
+    #msg {
+      flex-grow: 1;
+      padding: 10px;
+      border-radius: 5px 0 0 5px;
+      border: none;
+      font-size: 16px;
+    }
+
+    #send {
+      padding: 10px;
+      border: none;
+      background-color: #ff8c00;
+      color: white;
+      font-weight: bold;
+      border-radius: 0 5px 5px 0;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div id="chat">
+  <ul id="messages"></ul>
+</div>
+
+<div id="input-area">
+  <input id="msg" type="text" placeholder="Mesaj yaz... /nick [isim] ile ismini ayarla">
+  <button id="send">Gönder</button>
+</div>
+
+<script>
+  let nick = "Anonim";
+
+  document.getElementById('send').addEventListener('click', sendMessage);
+  document.getElementById('msg').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') sendMessage();
+  });
+
+  function sendMessage() {
+    const input = document.getElementById('msg');
+    const text = input.value.trim();
+    if (text === "") return;
+
+    if (text.startsWith('/nick ')) {
+      const newNick = text.substring(6).trim();
+      if (newNick) {
+        nick = newNick;
+        appendMessage("💡 Nick ayarlandı: " + nick);
+      } else {
+        appendMessage("❗ Geçerli bir nick girin.");
+      }
+    } else {
+      appendMessage(nick + ": " + text);
+    }
+
+    input.value = "";
+  }
+
+  function appendMessage(msg) {
+    const li = document.createElement('li');
+    li.textContent = msg;
+    document.getElementById('messages').appendChild(li);
+    li.scrollIntoView();
+  }
+</script>
+
+</body>
+</html>
